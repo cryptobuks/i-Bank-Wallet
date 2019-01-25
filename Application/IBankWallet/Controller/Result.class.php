@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Wallet\Controller;
+namespace IBankWallet\Controller;
 
 
 class Result

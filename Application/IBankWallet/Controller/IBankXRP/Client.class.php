@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Wallet\Controller\XRP;
+namespace IBankWallet\Controller\IBankXRP;
 require('vendor/autoload.php');
 
 use Http\Client\HttpClient;
 use Http\Discovery\HttpClientDiscovery;
 use Http\Discovery\MessageFactoryDiscovery;
 use Http\Message\MessageFactory;
-use Wallet\Controller\XRP\Api\Response;
-use Wallet\Controller\XRP\Api\Request;
+use IBankWallet\Controller\IBankXRP\Api\Response;
+use IBankWallet\Controller\IBankXRP\Api\Request;
 
 /**
  *  A rippled client.

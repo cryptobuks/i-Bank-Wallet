@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Wallet\Controller\XRP\Api\TransactionType;
+namespace IBankWallet\Controller\IBankXRP\Api\TransactionType;
 
-use Wallet\Controller\XRP\Api\Field;
+use IBankWallet\Controller\IBankXRP\Api\Field;
 
 /**
  * EscrowCreate Transaction Type Class
  *
- * Sequester XRP until the escrow process either finishes or is canceled.
+ * Sequester IBankXRP until the escrow process either finishes or is canceled.
  *
  * @link https://developers.ripple.com/escrowcreate.html EscrowCreate transaction type documentation.
  */
@@ -16,7 +16,7 @@ class EscrowCreate extends AbstractTransactionType
     /**
      * {@inheritDoc}
      *
-     * @throws \Wallet\Controller\XRP\Exception\FieldException
+     * @throws \IBankWallet\Controller\IBankXRP\Exception\FieldException
      */
     public function setFields()
     {

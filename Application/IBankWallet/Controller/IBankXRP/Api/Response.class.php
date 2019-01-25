@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Wallet\Controller\XRP\Api;
+namespace IBankWallet\Controller\IBankXRP\Api;
 
-use Wallet\Controller\XRP\Exception\ResponseErrorException;
-use Wallet\Controller\XRP\Exception\RippledException;
+use IBankWallet\Controller\IBankXRP\Exception\ResponseErrorException;
+use IBankWallet\Controller\IBankXRP\Exception\RippledException;
 use Psr\Http\Message\ResponseInterface;
 
 class Response

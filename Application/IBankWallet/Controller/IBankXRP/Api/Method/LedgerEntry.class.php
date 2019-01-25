@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Wallet\Controller\XRP\Api\Method;
+namespace IBankWallet\Controller\IBankXRP\Api\Method;
 
-use Wallet\Controller\XRP\Api\Field;
-use Wallet\Controller\XRP\Exception\InvalidParameterException;
+use IBankWallet\Controller\IBankXRP\Api\Field;
+use IBankWallet\Controller\IBankXRP\Exception\InvalidParameterException;
 
 /**
  * LedgerEntry Method Class
  *
- * The ledger_entry method returns a single ledger object from the XRP Ledger in its raw format. See ledger format for
+ * The ledger_entry method returns a single ledger object from the IBankXRP Ledger in its raw format. See ledger format for
  * information on the different types of objects you can retrieve.
  *
  * @link https://developers.ripple.com/ledger_entry.html LedgerEntry method documentation.
@@ -18,7 +18,7 @@ class LedgerEntry extends AbstractMethod
     /**
      * {@inheritDoc}
      *
-     * @throws \Wallet\Controller\XRP\Exception\FieldException
+     * @throws \IBankWallet\Controller\IBankXRP\Exception\FieldException
      */
     public function setFields()
     {

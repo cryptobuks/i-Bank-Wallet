@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Wallet\Controller\XRP\Api\Method;
+namespace IBankWallet\Controller\IBankXRP\Api\Method;
 
-use Wallet\Controller\XRP\Api\AbstractFieldable;
-use Wallet\Controller\XRP\Exception\InvalidParameterException;
+use IBankWallet\Controller\IBankXRP\Api\AbstractFieldable;
+use IBankWallet\Controller\IBankXRP\Exception\InvalidParameterException;
 
 /**
  * Provides an abstract for defining methods and validating their fields.

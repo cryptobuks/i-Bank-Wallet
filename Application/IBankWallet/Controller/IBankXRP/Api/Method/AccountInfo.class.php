@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Wallet\Controller\XRP\Api\Method;
+namespace IBankWallet\Controller\IBankXRP\Api\Method;
 
-use Wallet\Controller\XRP\Api\Field;
+use IBankWallet\Controller\IBankXRP\Api\Field;
 
 /**
  * AccountInfo Method Class
  *
- * The account_info command retrieves information about an account, its activity, and its XRP balance. All information
+ * The account_info command retrieves information about an account, its activity, and its IBankXRP balance. All information
  * retrieved is relative to a particular version of the ledger.
  *
  * @link https://developers.ripple.com/account_info.html AccountInfo method documentation.
@@ -17,7 +17,7 @@ class AccountInfo extends AbstractMethod
     /**
      * {@inheritDoc}
      *
-     * @throws \Wallet\Controller\XRP\Exception\FieldException
+     * @throws \IBankWallet\Controller\IBankXRP\Exception\FieldException
      */
     public function setFields()
     {

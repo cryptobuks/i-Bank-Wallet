@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Wallet\Controller\XRP\Api;
+namespace IBankWallet\Controller\IBankXRP\Api;
 
-use Wallet\Controller\XRP\Exception\FieldException;
+use IBankWallet\Controller\IBankXRP\Exception\FieldException;
 
 /**
  * Field.

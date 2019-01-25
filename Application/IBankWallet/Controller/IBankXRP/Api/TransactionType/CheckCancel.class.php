@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Wallet\Controller\XRP\Api\TransactionType;
+namespace IBankWallet\Controller\IBankXRP\Api\TransactionType;
 
-use Wallet\Controller\XRP\Api\Field;
+use IBankWallet\Controller\IBankXRP\Api\Field;
 
 /**
  * CheckCancel Transaction Type Class
@@ -18,7 +18,7 @@ class CheckCancel extends AbstractTransactionType
     /**
      * {@inheritDoc}
      *
-     * @throws \Wallet\Controller\XRP\Exception\FieldException
+     * @throws \IBankWallet\Controller\IBankXRP\Exception\FieldException
      */
     public function setFields()
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Wallet\Controller;
+namespace IBankWallet\Controller;
 
 use think\Controller;
 
@@ -9,7 +9,7 @@ class RippledController
     protected $walletRpc;
 
     public function __construct() {
-        $this->walletRpc = new WalletRpc('http://127.0.0.1:5005');
+        $this->walletRpc = new IBankWalletRpc('http://127.0.0.1:5005');
     }
 
     function getJsonBody() 
@@ -90,7 +90,7 @@ class RippledController
 
     }
 
-    public function storeWallet()
+    public function storeIBankWallet()
     {
         $this->getJsonBody();
         $account_id = I('post.account_id');
@@ -110,11 +110,11 @@ class RippledController
 
     }
 
-    public function genWallet()
+    public function genIBankWallet()
     {
         $this->getJsonBody();
         $passphrase = I('post.passphrase');
-        $response = $this->walletRpc->genWallet($passphrase);
+        $response = $this->walletRpc->genIBankWallet($passphrase);
         echo json_encode($response);
     }
 

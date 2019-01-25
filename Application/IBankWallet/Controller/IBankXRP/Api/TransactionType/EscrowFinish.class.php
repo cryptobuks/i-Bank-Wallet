@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Wallet\Controller\XRP\Api\TransactionType;
+namespace IBankWallet\Controller\IBankXRP\Api\TransactionType;
 
-use Wallet\Controller\XRP\Api\Field;
+use IBankWallet\Controller\IBankXRP\Api\Field;
 
 /**
  * EscrowFinish Transaction Type Class
  *
- * Deliver XRP from a held payment to the recipient.
+ * Deliver IBankXRP from a held payment to the recipient.
  *
  * @link https://developers.ripple.com/escrowfinish.html EscrowFinish transaction type documentation.
  */
@@ -16,7 +16,7 @@ class EscrowFinish extends AbstractTransactionType
     /**
      * {@inheritDoc}
      *
-     * @throws \Wallet\Controller\XRP\Exception\FieldException
+     * @throws \IBankWallet\Controller\IBankXRP\Exception\FieldException
      */
     public function setFields()
     {

@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Wallet\Controller\XRP\Api\TransactionType;
+namespace IBankWallet\Controller\IBankXRP\Api\TransactionType;
 
-use Wallet\Controller\XRP\Api\Field;
+use IBankWallet\Controller\IBankXRP\Api\Field;
 
 /**
  * PaymentChannelClaim Transaction Type Class
  *
- * Claim XRP from a payment channel, adjust the payment channel's expiration, or both. This transaction can be used
+ * Claim IBankXRP from a payment channel, adjust the payment channel's expiration, or both. This transaction can be used
  * differently depending on the transaction sender's role in the specified channel.
  *
  * @link https://developers.ripple.com/paymentchannelclaim.html PaymentChannelClaim transaction type documentation.
@@ -17,7 +17,7 @@ class PaymentChannelClaim extends AbstractTransactionType
     /**
      * {@inheritDoc}
      *
-     * @throws \Wallet\Controller\XRP\Exception\FieldException
+     * @throws \IBankWallet\Controller\IBankXRP\Exception\FieldException
      */
     public function setFields()
     {

@@ -1,12 +1,12 @@
 <?php
 
-namespace Wallet\Controller;
+namespace IBankWallet\Controller;
 
-use Wallet\Model\WalletModel;
-use Wallet\Controller\XRP\Client;
+use IBankWallet\Model\IBankWalletModel;
+use IBankWallet\Controller\IBankXRP\Client;
 use Defuse\Crypto\Crypto;
 
-class WalletRpc
+class IBankWalletRpc
 {
     protected $client;
     protected $store;
@@ -14,7 +14,7 @@ class WalletRpc
     public function __construct($address) 
     {
         $this->client = new Client($address);
-        $this->store = new WalletModel;
+        $this->store = new IBankWalletModel;
     }
 
     /**
@@ -120,7 +120,7 @@ class WalletRpc
      * @return array 
      * @throws \Exception
      */
-    public function genWallet($passphrase)
+    public function genIBankWallet($passphrase)
     {
         /*
         {

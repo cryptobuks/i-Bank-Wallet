@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Wallet\Controller\XRP\Api;
+namespace IBankWallet\Controller\IBankXRP\Api;
 
-use Wallet\Controller\XRP\Client;
+use IBankWallet\Controller\IBankXRP\Client;
 
 class Request
 {
@@ -52,7 +52,7 @@ class Request
      */
     private function findClass($methodName)
     {
-        $class = '\\Wallet\Controller\XRP\\Api\\Method\\' . \Wallet\Controller\XRP\Util::CaseFromSnake($methodName);
+        $class = '\\IBankWallet\Controller\IBankXRP\\Api\\Method\\' . \IBankWallet\Controller\IBankXRP\Util::CaseFromSnake($methodName);
         if (!class_exists($class)) {
             throw new \Exception(sprintf('No class found for method: %s', $methodName));
         }

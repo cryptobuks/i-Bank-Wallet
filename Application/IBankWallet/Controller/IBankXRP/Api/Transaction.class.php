@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Wallet\Controller\XRP\Api;
+namespace IBankWallet\Controller\IBankXRP\Api;
 
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Process\Process;
-use Wallet\Controller\XRP\Client;
-use Wallet\Controller\XRP\Exception\TransactionException;
-use Wallet\Controller\XRP\Exception\TransactionSignException;
-use Wallet\Controller\XRP\Exception\TransactionTypeException;
+use IBankWallet\Controller\IBankXRP\Client;
+use IBankWallet\Controller\IBankXRP\Exception\TransactionException;
+use IBankWallet\Controller\IBankXRP\Exception\TransactionSignException;
+use IBankWallet\Controller\IBankXRP\Exception\TransactionTypeException;
 
 class Transaction
 {
@@ -62,7 +62,7 @@ class Transaction
      */
     public function findClass($type)
     {
-        $class = '\\Wallet\Controller\XRP\\Api\\TransactionType\\' . $type;
+        $class = '\\IBankWallet\Controller\IBankXRP\\Api\\TransactionType\\' . $type;
         if (!class_exists($class)) {
             throw new TransactionTypeException(sprintf('No class found for transaction type %s', $type));
         }

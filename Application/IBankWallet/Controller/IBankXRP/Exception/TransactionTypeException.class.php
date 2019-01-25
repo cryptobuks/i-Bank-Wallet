@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Wallet\Controller\XRP\Exception;
+namespace IBankWallet\Controller\IBankXRP\Exception;
 
 /**
  * An exception for transaction type errors.
  *
- * @package Wallet\Controller\XRP\Exception
+ * @package IBankWallet\Controller\IBankXRP\Exception
  */
 class TransactionTypeException extends RippledException
 {

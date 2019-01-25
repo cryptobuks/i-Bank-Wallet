@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Wallet\Controller\XRP\Api\Method;
+namespace IBankWallet\Controller\IBankXRP\Api\Method;
 
-use Wallet\Controller\XRP\Api\Field;
+use IBankWallet\Controller\IBankXRP\Api\Field;
 
 /**
  * Ledger Method Class
@@ -16,7 +16,7 @@ class Ledger extends AbstractMethod
     /**
      * {@inheritDoc}
      *
-     * @throws \Wallet\Controller\XRP\Exception\FieldException
+     * @throws \IBankWallet\Controller\IBankXRP\Exception\FieldException
      */
     public function setFields()
     {

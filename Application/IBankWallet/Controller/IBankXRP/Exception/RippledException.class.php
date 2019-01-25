@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Wallet\Controller\XRP\Exception;
+namespace IBankWallet\Controller\IBankXRP\Exception;
 
 use Exception;
 
