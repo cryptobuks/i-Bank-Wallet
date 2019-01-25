@@ -1,0 +1,189 @@
+<?php declare(strict_types=1);
+
+namespace Wallet\Controller\XRP\Api;
+
+use Wallet\Controller\XRP\Exception\ResponseErrorException;
+use Wallet\Controller\XRP\Exception\RippledException;
+use Psr\Http\Message\ResponseInterface;
+
+class Response
+{
+    /** @var string The raw response body returned from the API */
+    private $raw;
+
+    /** @var array Result block data returned from the API */
+    private $result;
+
+    /** @var bool True when result status is success */
+    private $success;
+
+    /** @var bool Validated flag from the result block */
+    private $validated;
+
+    /** @var bool */
+    private $error = false;
+
+    /** @var int */
+    private $errorCode;
+
+    /** @var string */
+    private $errorMessage;
+
+    /**
+     * MethodResponse constructor.
+     *
+     * @param ResponseInterface $response
+     * @throws \Exception
+     */
+    public function __construct(ResponseInterface $response)
+    {
+        $this->processResponse($response);
+    }
+
+    /**
+     * Validates and assigns data from response.
+     *
+     * @param ResponseInterface $response
+     * @throws \Exception
+     */
+    public function processResponse(ResponseInterface $response)
+    {
+        $data = null;
+        $this->setRaw($response->getBody()->__toString());
+
+        $data = json_decode($this->getRaw(), true);
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            throw new RippledException('Unable to parse JSON in API response');
+        }
+
+        if (!\is_array($data) || !isset($data['result'])) {
+            throw new RippledException('API response missing result data');
+        }
+
+        $this->setResult($data['result']);
+
+        $this->setSuccess($data['result']['status'] === 'success');
+        $this->setValidated($data['result']['validated'] ? $data['result']['validated'] : null);
+
+        // Set error data.
+        if ($data['result']['status'] === 'error') {
+            $this->setError(true);
+            $this->setErrorCode($data['result']['error_code']);
+            $this->setErrorMessage($data['result']['error_message']);
+
+            throw new ResponseErrorException($this->getErrorMessage(), $this->getErrorCode());
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getRaw()
+    {
+        return $this->raw;
+    }
+
+    /**
+     * @param string $raw
+     */
+    public function setRaw($raw)
+    {
+        $this->raw = $raw;
+    }
+
+    /**
+     * @return array
+     */
+    public function getResult()
+    {
+        return $this->result;
+    }
+
+    /**
+     * @param array $result
+     */
+    public function setResult(array $result)
+    {
+        $this->result = $result;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSuccess()
+    {
+        return $this->success;
+    }
+
+    /**
+     * @param bool $success
+     */
+    public function setSuccess($success)
+    {
+        $this->success = $success;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValidated()
+    {
+        return $this->validated;
+    }
+
+    /**
+     * @param bool $validated
+     */
+    public function setValidated( $validated = null)
+    {
+        $this->validated = $validated;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasError()
+    {
+        return $this->error;
+    }
+
+    /**
+     * @param bool $error
+     */
+    public function setError( $error)
+    {
+        $this->error = $error;
+    }
+
+    /**
+     * @return int
+     */
+    public function getErrorCode()
+    {
+        return $this->errorCode;
+    }
+
+    /**
+     * @param int $errorCode
+     */
+    public function setErrorCode(int $errorCode = null)
+    {
+        $this->errorCode = $errorCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorMessage()
+    {
+        return $this->errorMessage;
+    }
+
+    /**
+     * @param string $errorMessage
+     */
+    public function setErrorMessage($errorMessage = null)
+    {
+        $this->errorMessage = $errorMessage;
+    }
+}

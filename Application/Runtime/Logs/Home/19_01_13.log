@@ -1,0 +1,25 @@
+[ 2019-01-13T17:55:32+08:00 ]  
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000059s ]
+NOTIC: [8] Undefined index: REQUEST_METHOD /home/wmy/Workspace/tp3-wallet/ThinkPHP/Library/Think/App.class.php 第 32 行.
+NOTIC: [8] Undefined index: REQUEST_URI /home/wmy/Workspace/tp3-wallet/ThinkPHP/Library/Think/Dispatcher.class.php 第 141 行.
+NOTIC: [8] Use of undefined constant _PHP_FILE_ - assumed '_PHP_FILE_' /home/wmy/Workspace/tp3-wallet/ThinkPHP/Library/Think/Dispatcher.class.php 第 208 行.
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000319s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000355s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+NOTIC: [8] Use of undefined constant __ROOT__ - assumed '__ROOT__' /home/wmy/Workspace/tp3-wallet/ThinkPHP/Library/Behavior/ContentReplaceBehavior.class.php 第 35 行.
+NOTIC: [8] Use of undefined constant __ROOT__ - assumed '__ROOT__' /home/wmy/Workspace/tp3-wallet/ThinkPHP/Library/Behavior/ContentReplaceBehavior.class.php 第 42 行.
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000064s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000115s ]
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.004078s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004120s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000133s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000164s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000416s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000463s ]
+
