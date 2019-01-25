@@ -1,9 +1,9 @@
 <?php
 
-namespace Wallet\Model;
+namespace IBankWallet\Model;
 use Think\Model;
 
-class WalletModel extends Model
+class IBankWalletModel extends Model
 {
   /*
   `id` int(11)  NOT NULL AUTO_INCREMENT,
