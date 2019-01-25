@@ -1,0 +1,9 @@
+.idea/
+/.vscode
+*.log
+*.bak
+.env
+.DS_Store
+composer.lock
+.tags
+.tags.append
