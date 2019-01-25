@@ -3,7 +3,7 @@
 namespace IBankWallet\Controller;
 
 
-class Result
+class IBankResult
 {
     /** @var array */
     public $data;

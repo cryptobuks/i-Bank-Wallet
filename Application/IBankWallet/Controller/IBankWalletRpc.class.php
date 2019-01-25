@@ -11,7 +11,7 @@ class IBankWalletRpc
     protected $client;
     protected $store;
 
-    public function __construct($address) 
+    public function __construct($address)
     {
         $this->client = new Client($address);
         $this->store = new IBankWalletModel;
@@ -52,7 +52,7 @@ class IBankWalletRpc
     {
         $map["account_id"] = $account;
         $r = $this->store->where($map)->find();
-        if ($r) 
+        if ($r)
         {
             return true;
         }
@@ -70,7 +70,7 @@ class IBankWalletRpc
     {
         $map["account_id"] = $account;
         $r = $this->store->where($map)->find();
-        if ($r) 
+        if ($r)
         {
             return $this->decryptSeed($r["master_seed"], $password);
         }
@@ -86,13 +86,13 @@ class IBankWalletRpc
      */
     public function walletUpdate($account, $master_seed, $password)
     {
-        if ($this->accountExists($account)) 
+        if ($this->accountExists($account))
         {
-            return new Result(1, "Account already exists", array());
+            return new IBankResult(1, "Account already exists", array());
         }
         $encryptedSeed = $this->encryptedSeed($master_seed, $password);
         $data = array('account_id'=>$account,'master_seed'=>$encryptedSeed);
-        try 
+        try
         {
             var_dump($data);
             $result = $this->store->data($data)->add();
@@ -100,15 +100,15 @@ class IBankWalletRpc
             if ($result)
             {
                 $dst = array("account" => $account, "stored" => true);
-                return new Result(0, "", $dst);
-            } else 
+                return new IBankResult(0, "", $dst);
+            } else
             {
-                return new Result(1, "Store account failed" . $result, array());
+                return new IBankResult(1, "Store account failed" . $result, array());
             }
-        } 
+        }
         catch (PDOException $ex)
         {
-            return new Result(1, "Store account exception" . $ex , array());
+            return new IBankResult(1, "Store account exception" . $ex , array());
         }
     }
 
@@ -117,7 +117,7 @@ class IBankWalletRpc
      * 生成账户
      *
      * @param string $passphrase
-     * @return array 
+     * @return array
      * @throws \Exception
      */
     public function genIBankWallet($passphrase)
@@ -137,15 +137,15 @@ class IBankWalletRpc
         }
          */
         $response = $this->client->send('wallet_propose', ["passphrase" => $passphrase]);
-        if ($response->isSuccess()) 
+        if ($response->isSuccess())
         {
-            $data = $response->getResult();
+            $data = $response->getIBankResult();
             $rst = array("account_id" => $data["account_id"],
-                         "master_seed" => $data["master_seed"]);
-            return new Result(0, "", $rst);
+                "master_seed" => $data["master_seed"]);
+            return new IBankResult(0, "", $rst);
         }
 
-        return new Result($response->getErrorCode(), $response->getErrorMessage(), array());
+        return new IBankResult($response->getErrorCode(), $response->getErrorMessage(), array());
     }
 
     /**
@@ -155,7 +155,7 @@ class IBankWalletRpc
      * @return array {"data" => array("blob_id" => ""), "errorCode" => 0, "errorMessage" => ""}
      * @throws \Exception
      */
-    function sign( $from, $to, $secret, $amount, $fee, $sourceTag, $destinationTag) 
+    function sign( $from, $to, $secret, $amount, $fee, $sourceTag, $destinationTag)
     {
         if ( !isset($fee) || $fee == 0 ||  $fee == "" )
         {
@@ -169,14 +169,14 @@ class IBankWalletRpc
             "SourceTag" => $sourceTag,
             "DestinationTag" => $destinationTag,
             "TransactionType" => "Payment")]);
-        if ($response->isSuccess()) 
+        if ($response->isSuccess())
         {
-            $data = $response->getResult();
+            $data = $response->getIBankResult();
             $rst = array("blob_id" => $data["tx_blob"]);
-            return new Result(0, "", $rst);
+            return new IBankResult(0, "", $rst);
         }
 
-        return new Result($response->getErrorCode(), $response->getErrorMessage(), null);
+        return new IBankResult($response->getErrorCode(), $response->getErrorMessage(), null);
     }
 
     /**
@@ -186,50 +186,50 @@ class IBankWalletRpc
      * @return array {"data" => array("tx_id" => ""), "errorCode" => 0, "errorMessage" => ""}
      * @throws \Exception
      */
-    function submit($blob_id) 
+    function submit($blob_id)
     {
         $response= $this->client->send('submit', [
             "tx_blob" => $blob_id
         ]);
-        if ($response->isSuccess()) 
+        if ($response->isSuccess())
         {
-            $data = $response->getResult();
+            $data = $response->getIBankResult();
             $rst = array("tx_id" => $data["tx_json"]["hash"]);
-            return new Result(0, "", $rst);
+            return new IBankResult(0, "", $rst);
         }
 
-        return new Result($response->getErrorCode(), $response->getErrorMessage(), null);
+        return new IBankResult($response->getErrorCode(), $response->getErrorMessage(), null);
     }
 
     /**
      * 提交必须启用目的标签约束任务，如果提交成功，则向account的转账必须指定destinationTag，否则转账失败
      *
      * @param string $blob_id
-     * @return array 
+     * @return array
      * @throws \Exception
      */
-    function submitRequireDest($account, $secret, $fee) 
+    function submitRequireDest($account, $secret, $fee)
     {
-        if (!isset($account) || !isset($secret)) 
+        if (!isset($account) || !isset($secret))
         {
-            return new Result(1, "account or secret required", null);
+            return new IBankResult(1, "account or secret required", null);
         }
-        if (!isset($fee) ) 
+        if (!isset($fee) )
         {
             $fee = 1500;
         }
         $response= $this->client->send('submit', [
-            "secret" => $secret, 
+            "secret" => $secret,
             "tx_json" => array("Account" => $account, "Fee" => $fee, "Flags" => 0, "SetFlag" => 1,
-                        "TransactionType" => "AccountSet")
+            "TransactionType" => "AccountSet")
         ]);
-        if ($response->isSuccess()) 
+        if ($response->isSuccess())
         {
-            $data = $response->getResult();
-            return new Result(0, "", $data);
+            $data = $response->getIBankResult();
+            return new IBankResult(0, "", $data);
         }
 
-        return new Result($response->getErrorCode(), $response->getErrorMessage(), null);
+        return new IBankResult($response->getErrorCode(), $response->getErrorMessage(), null);
     }
 
     /**
@@ -244,14 +244,14 @@ class IBankWalletRpc
         $response = $this->client->send('account_info', [
             'account' => $account
         ]);
-        if ($response->isSuccess()) 
+        if ($response->isSuccess())
         {
-            $data = $response->getResult();
+            $data = $response->getIBankResult();
             $rst = array("Balance" => $data["account_data"]["Balance"], "Account" => $data["account_data"]["Account"], "destinationTag" => $destinationTag);
-            return new Result(0, "", $rst);
+            return new IBankResult(0, "", $rst);
         }
 
-        return new Result($response->getErrorCode(), $response->getErrorMessage(), null);
+        return new IBankResult($response->getErrorCode(), $response->getErrorMessage(), null);
     }
 
     /**
@@ -270,14 +270,14 @@ class IBankWalletRpc
             "TransactionType" => "SetRegularKey"
         )]);
 
-        if ($response->isSuccess()) 
+        if ($response->isSuccess())
         {
-            $data = $response->getResult();
+            $data = $response->getIBankResult();
             $rst = array("blob_id" => $data["tx_blob"]);
-            return new Result(0, "", $rst);
+            return new IBankResult(0, "", $rst);
         }
 
-        return new Result($response->getErrorCode(), $response->getErrorMessage(), null);
+        return new IBankResult($response->getErrorCode(), $response->getErrorMessage(), null);
     }
 
 
@@ -294,14 +294,14 @@ class IBankWalletRpc
             "secret" => $secret,"tx_json" => array( "Account" => $main_account,
             "TransactionType" => "SetRegularKey"
         )]);
-        if ($response->isSuccess()) 
+        if ($response->isSuccess())
         {
-            $data = $response->getResult();
+            $data = $response->getIBankResult();
             $rst = array("blob_id" => $data["tx_blob"]);
-            return new Result(0, "", $rst);
+            return new IBankResult(0, "", $rst);
         }
 
-        return new Result($response->getErrorCode(), $response->getErrorMessage(), null);
+        return new IBankResult($response->getErrorCode(), $response->getErrorMessage(), null);
     }
 
     /**
@@ -313,25 +313,25 @@ class IBankWalletRpc
     public function random()
     {
         $response = $this->client->send('random', [ "id" => 1]);
-        if ($response->isSuccess()) 
+        if ($response->isSuccess())
         {
-            $data = $response->getResult();
+            $data = $response->getIBankResult();
             $rst = array("random" => $data["random"]);
-            return new Result(0, "", $rst);
+            return new IBankResult(0, "", $rst);
         }
 
-        return new Result($response->getErrorCode(), $response->getErrorMessage(), null);
+        return new IBankResult($response->getErrorCode(), $response->getErrorMessage(), null);
     }
 
     /**
      * 查看账户指定标签下的交易历史, 此方法是直接从瑞波账本上获取数据
      * @param string account destinationTag limit
-     * @return array 
+     * @return array
      * @throws \Exception
      */
     public function accountTransaction($account, $destinationTag, $limit)
     {
-        if (!isset($destinationTag) ) 
+        if (!isset($destinationTag) )
         {
             $destinationTag = 0;
         }
@@ -339,7 +339,7 @@ class IBankWalletRpc
             "ledger_index_min"=>-1, "limit" => $limit,
             "binary" => false, "forward" => false, "ledger_index_max" => -1]);
         if ($response->isSuccess()) {
-            $data = $response->getResult();
+            $data = $response->getIBankResult();
             $rst = array("account" => $data["account"], "ledger_index_max" => $data["ledger_index_max"],
                 "ledger_index_min" => $data["ledger_index_min"], "status" => $data["status"]);
             $transaction = array();
@@ -356,31 +356,31 @@ class IBankWalletRpc
                 }
             }
             $rst["transactions"] = $transaction;
-            return new Result(0, "", $rst);
+            return new IBankResult(0, "", $rst);
         }
 
-        return new Result($response->getErrorCode(), $response->getErrorMessage(), null);
+        return new IBankResult($response->getErrorCode(), $response->getErrorMessage(), null);
     }
 
     /**
      * 查看账户的交易历史，使用此方法把不同区块高度的交易都写入数据库，在数据库里通过sql语言计算用户余额
      * @param string account ledger_index_min ledger_index_max
-     * @return array 
+     * @return array
      * @throws \Exception
      */
     public function accountTransactions($account, $ledger_index_min, $ledger_index_max)
     {
-        if (!isset($ledger_index_min) || !isset($ledger_index_max)) 
+        if (!isset($ledger_index_min) || !isset($ledger_index_max))
         {
-            return new Result(1, "need ledger_index_min or ledger_index_max", null);
+            return new IBankResult(1, "need ledger_index_min or ledger_index_max", null);
         }
 
         $response = $this->client->send('account_tx', ["account" => $account,
             #"limit" => -1,
-            "ledger_index_min"=>$ledger_index_min, 
+            "ledger_index_min"=>$ledger_index_min,
             "binary" => false, "forward" => false, "ledger_index_max" => $ledger_index_max]);
         if ($response->isSuccess()) {
-            $data = $response->getResult();
+            $data = $response->getIBankResult();
             $rst = array("account" => $data["account"], "ledger_index_max" => $data["ledger_index_max"],
                 "ledger_index_min" => $data["ledger_index_min"], "status" => $data["status"]);
             $transaction = array();
@@ -397,48 +397,48 @@ class IBankWalletRpc
                 }
             }
             $rst["transactions"] = $transaction;
-            return new Result(0, "", $rst);
+            return new IBankResult(0, "", $rst);
         }
 
-        return new Result($response->getErrorCode(), $response->getErrorMessage(), null);
+        return new IBankResult($response->getErrorCode(), $response->getErrorMessage(), null);
     }
 
     /**
      * 获取交易详情，只返回了部分交易数据，如果想要更详细的信息，可以直接调用client->send方法
      *
      * @param string tx_id
-     * @return array 
+     * @return array
      * @throws \Exception
      */
     public function getTransaction($tx_id)
     {
         $response = $this->client->send('tx', ["transaction" => $tx_id]);
         if ($response->isSuccess()) {
-            $data = $response->getResult();
+            $data = $response->getIBankResult();
             $rst = array();
             if ($data["TransactionType"] == "Payment" ) {
                 $rst = array("Account" => $data["delivered_amount"], "Amount"=> $data["Amount"],
-                             "Destination" => $data["Destination"],
-                             "SourceTag" => $data["SourceTag"], "date" => $data["date"],
-                             "DestinationTag" => $data["DestinationTag"], "date" => $data["date"],
-                             "hash" => $data["hash"], "TransactionType" => $data["TransactionType"],
-                             "Fee" => $data["Fee"], "ledger_index" => $data["ledger_index"],
-                             "TransactionResult" => $data["meta"]["TransactionResult"] );
+                    "Destination" => $data["Destination"],
+                    "SourceTag" => $data["SourceTag"], "date" => $data["date"],
+                    "DestinationTag" => $data["DestinationTag"], "date" => $data["date"],
+                    "hash" => $data["hash"], "TransactionType" => $data["TransactionType"],
+                    "Fee" => $data["Fee"], "ledger_index" => $data["ledger_index"],
+                    "TransactionIBankResult" => $data["meta"]["TransactionIBankResult"] );
             } else if ($data["TransactionType"] == "AccountSet" ) {
                 $rst = array("Account" => $data["Account"], "date" => $data["date"],
-                 "hash" => $data["hash"], "TransactionType" => $data["TransactionType"],
-                 "validated" => $data["validated"], "status" => $data["status"],
-                 "TransactionResult" => $data["meta"]["TransactionResult"]);
+                    "hash" => $data["hash"], "TransactionType" => $data["TransactionType"],
+                    "validated" => $data["validated"], "status" => $data["status"],
+                    "TransactionIBankResult" => $data["meta"]["TransactionIBankResult"]);
             } else if ($data["TransactionType"] == "SetRegularKey" ) {
                 $rst = array("Account" => $data["Account"], "RegularKey" => $data["RegularKey"],
-                "date" => $data["date"], "hash" => $data["hash"],
-                 "TransactionType" => $data["TransactionType"] );
+                    "date" => $data["date"], "hash" => $data["hash"],
+                    "TransactionType" => $data["TransactionType"] );
             }
 
-            return new Result(0, "", $rst);
+            return new IBankResult(0, "", $rst);
         }
 
-        return new Result($response->getErrorCode(), $response->getErrorMessage(), null);
+        return new IBankResult($response->getErrorCode(), $response->getErrorMessage(), null);
     }
 
 
@@ -456,11 +456,11 @@ class IBankWalletRpc
             "secret" => $regular_secret,"tx_json" => array( "Account" => $main_account,
             "TransactionType" => "AccountSet"
         )]);
-        if ($response->isSuccess()) 
+        if ($response->isSuccess())
         {
-            $data = $response->getResult();
+            $data = $response->getIBankResult();
             $rst = array("blob_id" => $data["tx_blob"]);
-            return new Result(0, "", $rst);
+            return new IBankResult(0, "", $rst);
         }
     }
 

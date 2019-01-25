@@ -4,7 +4,7 @@ namespace IBankWallet\Controller;
 
 use think\Controller;
 
-class RippledController
+class IBankRippledController
 {
     protected $walletRpc;
 
@@ -12,12 +12,12 @@ class RippledController
         $this->walletRpc = new IBankWalletRpc('http://127.0.0.1:5005');
     }
 
-    function getJsonBody() 
+    function getJsonBody()
     {
         $put=file_get_contents('php://input');
         $put=json_decode($put,1);
         foreach ($put as $key => $value) {
-            $_POST[$key]=$value;   
+            $_POST[$key]=$value;
         }
     }
 
