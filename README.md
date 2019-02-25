@@ -20,7 +20,9 @@ ripple address need 20 xrp to active
 
 所以，获取余额和获取交易历史等接口都需要传入地址和Tag两个参数来唯一标识用户
 
-
 # 瑞波币的配置文件和验证文件目录
 /opt/rippled/etc 
 /opt/rippled/bin
+
+# 依赖的php扩展模块
+pdo mysql xmlwriter
