@@ -3,6 +3,7 @@
 namespace IBankWallet\Model;
 use Think\Model;
 
+// IBankWalletModel
 class IBankWalletModel extends Model
 {
   /*
